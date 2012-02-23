@@ -5,7 +5,7 @@ package Pod::Weaver::Section::Collect::FromOther;
 use Moose;
 use namespace::autoclean;
 
-use Moose::Autobox; # XXX I'm... hesitant.
+use Moose::Autobox;
 
 use Path::Class;
 
@@ -19,9 +19,9 @@ use Pod::Elemental::Transformer::Gatherer;
 use Pod::Weaver::Plugin::EnsurePod5;
 use Pod::Weaver::Section::Collect;
 
+# debugging...
 #use Smart::Comments '###';
 
-# XXX plugin roles...
 with
     'Pod::Weaver::Role::Preparer',
     ;
