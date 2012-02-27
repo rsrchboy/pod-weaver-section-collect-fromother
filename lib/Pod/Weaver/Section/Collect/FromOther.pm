@@ -15,6 +15,7 @@ use Pod::Elemental;
 use Pod::Elemental::Document;
 use Pod::Elemental::Element::Pod5::Command;
 use Pod::Elemental::Transformer::Gatherer;
+use Pod::Elemental::Transformer::ListToHead;
 
 use Pod::Weaver::Plugin::EnsurePod5;
 use Pod::Weaver::Section::Collect;
@@ -35,6 +36,13 @@ has header => (
     required => 1,
     default  => sub { shift->plugin_name },
 );
+
+=method prepare_input($input)
+
+Check the given C<$input> for any commands that would trigger us, and
+extract/insert pod as requested.
+
+=cut
 
 sub prepare_input {
     my ($self, $input) = @_;
@@ -94,6 +102,7 @@ sub copy_sections_from_other {
     my $other_doc = Pod::Elemental->read_file($fn);
     Pod::Elemental::Transformer::Pod5->new->transform_node($other_doc);
 
+    my $list_transform = Pod::Elemental::Transformer::ListToHead->new;
     my $nester = Pod::Elemental::Transformer::Nester->new({
          top_selector      =>  s_command('head1'),
          content_selectors => [
@@ -109,8 +118,9 @@ sub copy_sections_from_other {
 
     ### attack \$other_doc!...
     my @newbies;
-    my $found_command = 0;
+    my $found_command = ($command || q{}) eq 'all' ? 1 : 0;
 
+    $list_transform->transform_node($other_doc);
     $nester->transform_node($other_doc);
     $other_doc->children->each_value(sub {
 
@@ -143,15 +153,7 @@ Copy chunks of POD from other documents, and incorporate them.
 
 =head1 SEE ALSO
 
-L<Pod::Weaver>, L<Pod::Weaver::Section::Collect>
-
-=head1 BUGS
-
-All complex software has bugs lurking in it, and this module is no exception.
-
-Bugs, feature requests and pull requests through GitHub are most welcome; our
-page and repo (same URI):
-
-    https://github.com/RsrchBoy/pod-weaver-section-collect-fromother
+L<Pod::Weaver>
+L<Pod::Weaver::Section::Collect>
 
 =cut
