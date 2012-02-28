@@ -91,6 +91,21 @@ sub _find_module {
     die "Cannot find $module in \@INC?!";
 }
 
+=method copy_sections_from_other($module, $header_text, $opts)
+
+Loads the POD from C<$module> (specified as a package name, findable along
+C<@INC>), looks for a C<=head1> section with C<$header_text>, and copies
+everything pulls it out until the next C<=head1> section.
+
+We return the elements we find from the first command until the next section;
+this is to enable preface text to be skipped.  This behaviour can be altered
+by setting C<$opts> to 'all';
+
+We return a series of elements suitable for inclusion directly into another
+document.
+
+=cut
+
 sub copy_sections_from_other {
     my ($self, $module, $header_text, $command) = @_;
 
@@ -149,11 +164,14 @@ __END__
 
 =head1 DESCRIPTION
 
-Copy chunks of POD from other documents, and incorporate them.
+Copy chunks of POD from other documents, and incorporate them.  Our purpose
+here is to enable the easy documentation of packages that serve to combine
+parts of pre-existing packages (and thus pre-existing documentation).
 
 =head1 SEE ALSO
 
 L<Pod::Weaver>
 L<Pod::Weaver::Section::Collect>
+L<Reindeer> uses this package to collect documentation from various sources.
 
 =cut
