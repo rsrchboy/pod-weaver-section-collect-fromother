@@ -15,7 +15,7 @@ use Pod::Elemental;
 use Pod::Elemental::Document;
 use Pod::Elemental::Element::Pod5::Command;
 use Pod::Elemental::Transformer::Gatherer;
-use Pod::Elemental::Transformer::ListToHead;
+use Pod::Elemental::Transformer::List::Converter;
 
 use Pod::Weaver::Plugin::EnsurePod5;
 use Pod::Weaver::Section::Collect;
@@ -93,7 +93,7 @@ sub _find_module {
 
 =method copy_sections_from_other($module, $header_text, $opts)
 
-Loads the POD from C<$module> (specified as a package name, findable along
+Loads the POD from C<$module> (specified as a package name, in our
 C<@INC>), looks for a C<=head1> section with C<$header_text>, and copies
 everything pulls it out until the next C<=head1> section.
 
@@ -102,7 +102,8 @@ this is to enable preface text to be skipped.  This behaviour can be altered
 by setting C<$opts> to 'all';
 
 We return a series of elements suitable for inclusion directly into another
-document.
+document. Note that if this set includes a list, that list will be converted,
+with each C<=item> command becoming a C<=head2>.
 
 =cut
 
@@ -117,7 +118,7 @@ sub copy_sections_from_other {
     my $other_doc = Pod::Elemental->read_file($fn);
     Pod::Elemental::Transformer::Pod5->new->transform_node($other_doc);
 
-    my $list_transform = Pod::Elemental::Transformer::ListToHead->new;
+    my $list_transform = Pod::Elemental::Transformer::List::Converter->new;
     my $nester = Pod::Elemental::Transformer::Nester->new({
          top_selector      =>  s_command('head1'),
          content_selectors => [
@@ -166,7 +167,7 @@ __END__
 
 Copy chunks of POD from other documents, and incorporate them.  Our purpose
 here is to enable the easy documentation of packages that serve to combine
-parts of pre-existing packages (and thus pre-existing documentation).
+parts of preexisting packages (and thus preexisting documentation).
 
 =head1 SEE ALSO
 
