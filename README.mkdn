@@ -1,0 +1,84 @@
+[![Build Status](https://travis-ci.org/RsrchBoy/pod-weaver-section-collect-fromother.svg?branch=master)](https://travis-ci.org/RsrchBoy/pod-weaver-section-collect-fromother)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/Pod-Weaver-Section-Collect-FromOther.png)](http://cpants.charsbar.org/dist/overview/Pod-Weaver-Section-Collect-FromOther)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/pod-weaver-section-collect-fromother/badge.svg?branch=master)](https://coveralls.io/r/RsrchBoy/pod-weaver-section-collect-fromother?branch=master)
+
+# NAME
+
+Pod::Weaver::Section::Collect::FromOther - Import sections from other POD
+
+# VERSION
+
+This document describes version 0.003 of Pod::Weaver::Section::Collect::FromOther - released October 10, 2016 as part of Pod-Weaver-Section-Collect-FromOther.
+
+# DESCRIPTION
+
+Copy chunks of POD from other documents, and incorporate them.  Our purpose
+here is to enable the easy documentation of packages that serve to combine
+parts of preexisting packages (and thus preexisting documentation).
+
+# METHODS
+
+## prepare\_input($input)
+
+Check the given `$input` for any commands that would trigger us, and
+extract/insert pod as requested.
+
+## copy\_sections\_from\_other($module, $header\_text, $opts)
+
+Loads the POD from `$module` (specified as a package name, in our
+`@INC`), looks for a `=head1` section with `$header_text`, and copies
+everything pulls it out until the next `=head1` section.
+
+We return the elements we find from the first command until the next section;
+this is to enable preface text to be skipped.  This behaviour can be altered
+by setting `$opts` to 'all';
+
+We return a series of elements suitable for inclusion directly into another
+document. Note that if this set includes a list, that list will be converted,
+with each `=item` command becoming a `=head2`.
+
+# SEE ALSO
+
+Please see those modules/websites for more information related to this module.
+
+- [Pod::Weaver](https://metacpan.org/pod/Pod::Weaver)
+- [Pod::Weaver::Section::Collect](https://metacpan.org/pod/Pod::Weaver::Section::Collect)
+- [[Reindeer](https://metacpan.org/pod/Reindeer) uses this package to collect documentation from various sources.](https://metacpan.org/pod/Reindeer&#x20;uses&#x20;this&#x20;package&#x20;to&#x20;collect&#x20;documentation&#x20;from&#x20;various&#x20;sources.)
+
+# BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+[https://github.com/RsrchBoy/pod-weaver-section-collect-fromother/issues](https://github.com/RsrchBoy/pod-weaver-section-collect-fromother/issues)
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+# AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+## I'm a material boy in a material world
+
+<div>
+    <a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
+    <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
+    <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fpod-weaver-section-collect-fromother&title=RsrchBoy's%20CPAN%20Pod-Weaver-Section-Collect-FromOther&tags=%22RsrchBoy's%20Pod-Weaver-Section-Collect-FromOther%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
+</div>
+
+Please note **I do not expect to be gittip'ed or flattr'ed for this work**,
+rather **it is simply a very pleasant surprise**. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you if you feel like it ;)
+
+[Flattr](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fpod-weaver-section-collect-fromother&title=RsrchBoy&#x27;s%20CPAN%20Pod-Weaver-Section-Collect-FromOther&tags=%22RsrchBoy&#x27;s%20Pod-Weaver-Section-Collect-FromOther%20in%20the%20CPAN%22),
+[Gratipay](https://gratipay.com/RsrchBoy/), or indulge my
+[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If and \*only\* if you so desire.
+
+# COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+    The GNU Lesser General Public License, Version 2.1, February 1999
